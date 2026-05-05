@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import axios from "axios";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
 import Swal from "sweetalert2";
 import "./App.css";
@@ -212,18 +213,20 @@ function App() {
   }, [selectedDoctor, visibleDoctors]);
 
   const request = async (path, options = {}) => {
-    const response = await fetch(`${API_URL}${path}`, {
-      ...options,
-      headers: {
-        "Content-Type": "application/json",
-        ...(options.headers || {}),
-      },
-    });
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok) {
-      throw new Error(data.message || "Request failed");
+    try {
+      const response = await axios.request({
+        url: `${API_URL}${path}`,
+        method: options.method || "GET",
+        data: options.body ? JSON.parse(options.body) : undefined,
+        headers: {
+          "Content-Type": "application/json",
+          ...(options.headers || {}),
+        },
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.message || "Request failed");
     }
-    return data;
   };
 
   const flash = (message) => {
