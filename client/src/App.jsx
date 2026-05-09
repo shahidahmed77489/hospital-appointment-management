@@ -4,7 +4,7 @@ import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
 import Swal from "sweetalert2";
 import "./App.css";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
+const API_URL = `${import.meta.env.VITE_API_URL || "http://localhost:3000"}/api`;
 const RAZORPAY_CHECKOUT_URL = "https://checkout.razorpay.com/v1/checkout.js";
 
 const formatDateInput = (date) => {
